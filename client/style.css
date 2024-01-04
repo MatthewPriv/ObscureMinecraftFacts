@@ -1,0 +1,45 @@
+html {
+    overflow-y:scroll;
+}
+
+/* Taken from https://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 120px;
+    height: 120px;
+    margin: -76px 0 0 -76px;
+    border: 10px solid #f3f3f3;
+    animation: fadein 500ms, spin 1s linear infinite;
+    border-top: 10px solid #555;
+    border-radius: 50%;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.buttonFadeIn {
+    animation: fadein 2000ms;
+}
+
+.fadeIn {
+    animation: fadein 500ms ease-out;
+}
+
+.fadeOut {
+    animation: fadeout 300ms ease-in;
+}
+
+@keyframes fadein {
+    0% { opacity: 0; }
+    100%  { opacity: 1; }
+}
+
+@keyframes fadeout {
+    0% { opacity: 1; }
+    100%  { opacity: 0; }
+}

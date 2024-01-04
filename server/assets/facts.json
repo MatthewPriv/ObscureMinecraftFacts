@@ -1,0 +1,126 @@
+{
+  "version": "1.0.0",
+  "facts": [
+    {
+      "name": "explosive_furnace_minecarts",
+      "title": "Explosive Furnace Minecarts",
+      "description": "In versions prior to Minecraft 1.19 if the Furnace Minecart entity was destroyed by an explosion then it would only drop a Minecart item. This was inconsistent with the other Minecart items, for example the Chest Minecart would drop a Chest and a Minecart. In versions 1.19 and later this behaviour was changed so that the entity would drop it's combined item, inadvertently fixing this 'bug'.",
+      "tags": [
+        "Entities",
+        "Items"
+      ],
+      "snippets": [
+        "minecart_furnace_destroy"
+      ]
+    },
+    {
+      "name": "quasi_connectivity",
+      "title": "Quasi Connectivity",
+      "description": "Ever since pistons, dispensers, and droppers were implemented in the game they behave weirdly when being powered 'from above', and this was apparently because the developers had simply copy and pasted the code from the Door (which is a 2 block high block, thus needing to also check above). Players have grown to like this quirk and since Mojang have declared this a feature not a bug.",
+      "tags": [
+        "Redstone"
+      ],
+      "snippets": [
+        "piston_neighbor_signal",
+        "dispenser_neighbor_changed"
+      ]
+    },
+    {
+      "name": "scary_ocelots",
+      "title": "Scary Ocelots",
+      "description": "One of the strangest mob spawning behaviours in the game is how the Ocelot mob spawns according to the 'monster' mob cap. A brief rundown is that Minecraft has different types of mobs, two of which being 'monsters' and 'creatures'. Once there are a certain number of these types of mobs in the world then the game will stop spawning that type of mob. For some reason the developers categories the Ocelot as a 'monster' despite it not being hostile instead of being categorised as a 'creature' which is much more fitting. As a result of this if you have too many monsters in your world Ocelots will simply never spawn, even if there are no 'friendly' creatures in your world. A further complication of this is if you are playing on 'Peaceful' mode which completely disables monster spawning thus disabling Ocelot spawning.",
+      "tags": [
+        "Entities",
+        "Biomes"
+      ],
+      "snippets": [
+        "jungle_mob_spawning"
+      ]
+    }
+  ],
+  "snippets": [
+    {
+      "name": "minecart_furnace_destroy",
+      "fact": "explosive_furnace_minecarts",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.entity.vehicle.MinecartFurnace",
+      "version": "1.18.2",
+      "snippet": [
+        "@Override",
+        "public void destroy(DamageSource source) {",
+        "    super.destroy(source);",
+        "    if (!source.isExplosion() && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {",
+        "        this.spawnAtLocation(Blocks.FURNACE);",
+        "    }",
+        "}"
+      ],
+      "description": "The reason for the behaviour is because of the <code>!source.isExplosion()</code> check."
+    },
+    {
+      "name": "dispenser_neighbor_changed",
+      "fact": "quasi_connectivity",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.level.block.DispenserBlock",
+      "version": "1.20.4",
+      "snippet": [
+        "@Override",
+        "public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {",
+        "    boolean isPowered = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());",
+        "    boolean isTriggered = state.getValue(TRIGGERED);",
+        "    if (isPowered && !isTriggered) {",
+        "        level.scheduleTick(pos, this, 4);",
+        "        level.setBlock(pos, state.setValue(TRIGGERED, true), 2);",
+        "    } else if (!isPowered && isTriggered) {",
+        "        level.setBlock(pos, state.setValue(TRIGGERED, false), 2);",
+        "    }",
+        "}"
+      ],
+      "description": "The reason for this behaviour is because the `isPowered` boolean is determined by whether the current block position is has a signal OR if the position above that has a signal."
+    },
+    {
+      "name": "piston_neighbor_signal",
+      "fact": "quasi_connectivity",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.level.block.piston.PistonBaseBlock",
+      "version": "1.20.4",
+      "snippet": [
+        "private boolean getNeighborSignal(SignalGetter getter, BlockPos pos, Direction facing) {",
+        "    for (Direction direction : Direction.values()) {",
+        "        if (direction != facing && getter.hasSignal(pos.relative(direction), direction)) {",
+        "            return true;",
+        "        }",
+        "    }",
+        "    if (getter.hasSignal(pos, Direction.DOWN)) {",
+        "        return true;",
+        "    }",
+        "    BlockPos above = pos.above();",
+        "    for (Direction direction : Direction.values()) {",
+        "        if (direction != Direction.DOWN && getter.hasSignal(above.relative(direction), direction)) {",
+        "            return true;",
+        "        }",
+        "    }",
+        "    return false;",
+        "}"
+      ],
+      "description": "This snippet is responsible for determining whether a piston has a power signal, it is a bit more complicated then the dispenser one as pistons cannot be powered from the direction they are facing, hence why it has it's own method. As you can see it does these checks twice, once for the current position and once for the position above this."
+    },
+    {
+      "name": "jungle_mob_spawning",
+      "fact": "scary_ocelots",
+      "mappings": "Mojang",
+      "source": "net.minecraft.data.worldgen.biome.OverworldBiomes",
+      "version": "1.20.4",
+      "snippet": [
+        "public static Biome jungle(HolderGetter<PlacedFeature> features, HolderGetter<ConfiguredWorldCarver<?>> carvers) {",
+        "    MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();",
+        "    BiomeDefaultFeatures.baseJungleSpawns(builder);",
+        "    builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 40, 1, 2))",
+        "        .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 2, 1, 3))",
+        "        .addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PANDA, 1, 1, 2));",
+        "    return baseJungle(features, carvers, 0.9F, false, false, true, builder, Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE));",
+        "}"
+      ],
+      "description": "As you can see in the snippet, this is responsible for determining mob spawning in the jungle, this adds parrots, ocelots, and pandas. However ocelots are put under the 'monster' category, <code>addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 2, 1, 3))</code>, making them come under the monster spawn limits."
+    }
+  ]
+}
