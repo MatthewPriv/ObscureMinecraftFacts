@@ -1,122 +1,139 @@
-import { getFacts, getTags } from "./api.js"
-import {factToCard, tagToButton} from "./markup.js"
+import { getFacts, getTags } from "./api.js";
+import { factToCard, tagToButton } from "./markup.js";
 
-const searchTags = new Set()
-const toasts = []
+const searchTags = new Set();
+const toasts = [];
 
-let reconnecting = null
+let reconnecting = null;
 
 async function reloadTags() {
-    let tagButtons = document.getElementById("fact_tags")
+    const tagButtons = document.getElementById("fact_tags");
 
-
-    let tags = await getTags()
+    const tags = await getTags();
     if (tags === null) {
         // It doesn't really matter if tags aren't available
-        return
+        return;
     }
-    tagButtons.innerHTML = tags.map(tag => tagToButton(tag)).join("\n")
+    tagButtons.innerHTML = tags.map(tag => tagToButton(tag)).join("\n");
     for (const tag of tagButtons.getElementsByTagName("*")) {
-        tag.classList.add("buttonFadeIn")
+        tag.classList.add("buttonFadeIn");
         tag.onclick = async () => {
             if (!searchTags.delete(tag.innerText)) {
-                searchTags.add(tag.innerText)
+                searchTags.add(tag.innerText);
             }
-            await reloadFacts()
-            tag.classList.toggle("btn-outline-primary")
-            tag.classList.toggle("btn-success")
-        }
+            await reloadFacts();
+            tag.classList.toggle("btn-outline-primary");
+            tag.classList.toggle("btn-success");
+        };
     }
 }
 
 export async function reloadFacts() {
-    const content = document.getElementById("fact_content")
-    const search = document.getElementById("search_input")
+    const content = document.getElementById("fact_content");
+    const search = document.getElementById("search_input");
 
-
-    let animated = fadeOutContent(content, false)
-    let facts = await getFacts([...searchTags], search.value, false, 10)
+    let animated = fadeOutContent(content, false);
+    const facts = await getFacts([...searchTags], search.value, false, 10);
     if (facts === null) {
-        waitForAnimation(animated, serverUnavailablePage)
-        return false
+        waitForAnimation(animated, serverUnavailablePage);
+        return false;
     }
-    animated = fadeOutContent(content, true)
+    animated = fadeOutContent(content, true);
 
     waitForAnimation(animated, () => {
         if (facts.length === 0) {
-            content.innerHTML = `<div class="text-center p-3" style="font-size: x-large">No Search Results</div>`
+            content.innerHTML = `<div class="text-center p-3" style="font-size: x-large">No Search Results</div>`;
         } else {
-            content.innerHTML = facts.map(fact => factToCard(fact)).join("\n")
+            content.innerHTML = facts.map(fact => factToCard(fact)).join("\n");
         }
 
         for (const element of content.getElementsByTagName("*")) {
-            element.classList.toggle("fadeIn")
+            element.classList.toggle("fadeIn");
         }
 
         // Initialize tooltips
-        for (let trigger of document.querySelectorAll('[data-bs-toggle="tooltip"]')) {
-            new bootstrap.Tooltip(trigger)
+        for (const trigger of document.querySelectorAll('[data-bs-toggle="tooltip"]')) {
+            if (trigger.id !== "mapping_license") {
+                new bootstrap.Tooltip(trigger);
+            }
         }
-    })
-    return true
+    });
+    return true;
 }
 
 function fadeOutContent(content, post) {
-    if (post && reconnecting !== null || !post && reconnecting === null) {
-        let animated = null
+    if ((post && reconnecting !== null) || (!post && reconnecting === null)) {
+        let animated = null;
         for (const element of content.getElementsByTagName("*")) {
-            element.classList.add("fadeOut")
+            element.classList.add("fadeOut");
             if (animated === null) {
-                animated = element
+                animated = element;
             }
         }
-        return animated
+        return animated;
     }
-    return null
+    return null;
 }
 
 function serverUnavailablePage() {
     if (reconnecting !== null) {
-        return
+        return;
     }
 
-    let content = document.getElementById("fact_content")
-    content.innerHTML = `<div class="loader"></div>`
+    const content = document.getElementById("fact_content");
+    content.innerHTML = `<div class="loader"></div>`;
     for (const toast of toasts) {
-        toast.show()
+        toast.show();
     }
-    reconnecting = setInterval(tryReconnectToServer, 1_000)
+    reconnecting = setInterval(tryReconnectToServer, 1_000);
 }
 
 async function tryReconnectToServer() {
     if (reconnecting !== null && await reloadFacts()) {
-        reconnecting = null
-        clearInterval(reconnecting)
+        reconnecting = null;
+        clearInterval(reconnecting);
         for (const toast of toasts) {
-            toast.hide()
+            toast.hide();
         }
     }
 }
 
 function waitForAnimation(animated, runnable) {
     if (animated !== null) {
-        animated.addEventListener("animationend", runnable)
-        return
+        animated.addEventListener("animationend", runnable);
+        return;
     }
-    runnable()
+    runnable();
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-    await reloadTags()
-    await reloadFacts()
+    await reloadTags();
+    await reloadFacts();
 
-    const form = document.getElementById("search_form")
+    const form = document.getElementById("search_form");
     form.onsubmit = event => {
-        event.preventDefault()
-        reloadFacts()
-    }
+        event.preventDefault();
+        reloadFacts();
+    };
 
-    for (let toast of document.querySelectorAll(".toast")) {
-        toasts.push(new bootstrap.Toast(toast))
+    const license = document.getElementById("mapping_license");
+    // eslint-disable-next-line no-undef
+    const tooltip = new bootstrap.Tooltip(license);
+    // We want the user to be able to click the link on the tooltip.
+    license.onmouseenter = () => {
+        if (!tooltip._isShown()) {
+            tooltip.show();
+        }
+    };
+    license.onmouseleave = () => {
+        setTimeout(() => {
+            if (!license.matches(":hover")) {
+                tooltip.hide();
+            }
+        }, 600);
+    };
+
+    for (const toast of document.querySelectorAll(".toast")) {
+        toasts.push(new bootstrap.Toast(toast));
     }
-})
+});

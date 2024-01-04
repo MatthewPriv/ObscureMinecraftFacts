@@ -75,7 +75,7 @@
         "    }",
         "}"
       ],
-      "description": "The reason for this behaviour is because the `isPowered` boolean is determined by whether the current block position is has a signal OR if the position above that has a signal."
+      "description": "The reason for this behaviour is because the <code>isPowered</code> boolean is determined by whether the current block position is has a signal OR if the position above that has a signal."
     },
     {
       "name": "piston_neighbor_signal",

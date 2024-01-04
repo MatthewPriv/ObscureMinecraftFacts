@@ -3,18 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Obscure Minecraft Facts</title>
+    <link rel="icon" href="assets/square-omf-mark.png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="style.css">
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body class="background">
+    <nav class="navbar navbar-expand-lg navbar-light semi-transparent-light-gray-background" style="border-bottom: 4px solid #A9A9A9;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="" style="font-size: xx-large">
-                <img src="assets/MinecraftLogo.webp" height="50px" width="50px" alt="Minecraft Logo">
-                Obscure Minecraft Facts
+            <a class="navbar-brand">
+                <img src="assets/omf-logo.png" height="50px" alt="Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -48,9 +49,34 @@
         </div>
     </div>
 
-    <div class="container" id="fact_content">
+    <div class="container content" id="fact_content">
 
     </div>
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top footerFadeIn semi-transparent-light-gray-background" id="page_footer">
+        <div class="d-flex align-items-center">
+            <span class="ms-4 mb-3 mb-md-0 text-muted">
+                Designed by Matthew Wells <br>
+                <span class="text-muted" style="font-size: x-small">
+                    This website is not associated with Mojang or Microsoft. <br>
+                    Code snippets taken from a decompiled version of Minecraft using
+                    <a id="mapping_license" class="" data-bs-trigger="manual" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" data-bs-custom-class="wide-tooltip" data-bs-title="
+                        # (c) 2020 Microsoft Corporation. <br>
+                        These mappings are provided &quot;as-is&quot; and you bear the risk of using them.
+                        You may copy and use the mappings for development purposes, but you may not redistribute the mappings complete and unmodified.
+                        Microsoft makes no warranties, express or implied, with respect to the mappings provided here.
+                        Use and modification of this document or the source code (in any form) of
+                        Minecraft: Java Edition is governed by the Minecraft End User License Agreement available
+                        <a href=&quot;https://www.minecraft.net/en-us/eula&quot;>here</a>.
+                    ">Mojang Mappings</a> following the <a href="https://www.minecraft.net/en-us/usage-guidelines">usage guidelines.</a>
+                </span>
+            </span>
+        </div>
+        <img class="absolute-horizontal-center" src="assets/omf-mark.png" alt="Obscure Minecraft Facts Mark" width="128px">
+        <a class="justify-content-end me-3" href="https://github.com/MatthewPriv/ObscureMinecraftFacts">
+            <img src="assets/github-mark.svg" width="24" height="24" alt="Github Mark">
+        </a>
+    </footer>
 
     <script type="module" src="index.js"></script>
 </body>
