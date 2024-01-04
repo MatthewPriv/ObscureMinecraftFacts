@@ -53,9 +53,9 @@ body {
     width: 120px;
     height: 120px;
     margin: -76px 0 0 -76px;
-    border: 10px solid #f3f3f3;
+    border: 10px solid rgba(243, 243, 243, 0.5);
     animation: fadein 500ms, spin 1s linear infinite;
-    border-top: 10px solid #555;
+    border-top: 10px solid rgba(85, 85, 85, 0.8);
     border-radius: 50%;
 }
 
