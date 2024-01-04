@@ -1,13 +1,15 @@
 const express = require("express");
 const fs = require("node:fs");
+const bodyParser = require("body-parser");
 const { join } = require("path");
 
 const app = express();
+app.use(bodyParser.json());
 
 let version;
 const facts = new Map();
 const snippets = new Map();
-const factTags = [];
+const factTags = new Set();
 
 // We cache all the fact names to their snippets,
 // so we don't need to do this on the fly...
@@ -23,25 +25,26 @@ fs.readFile(join(__dirname, "assets", "facts.json"), "utf-8", (error, data) => {
     for (const snippet of json.snippets) {
         snippets.set(snippet.name, snippet);
     }
-
-    const tags = new Set();
     for (const fact of json.facts) {
-        for (const tag of fact.tags) {
-            tags.add(tag);
-        }
-        const factName = fact.name;
-        facts.set(factName, fact);
-        const factSnippets = [];
-        for (const snippetName of fact.snippets) {
-            const snippet = snippets[snippetName];
-            if (snippet) {
-                factSnippets.push(snippet);
-            }
-        }
-        factsToSnippets.set(factName, factSnippets);
+        addFact(fact);
     }
-    factTags.push(...tags);
 });
+
+function addFact(fact) {
+    for (const tag of fact.tags) {
+        factTags.add(tag);
+    }
+    const factName = fact.name;
+    facts.set(factName, fact);
+    const factSnippets = [];
+    for (const snippetName of fact.snippets) {
+        const snippet = snippets[snippetName];
+        if (snippet) {
+            factSnippets.push(snippet);
+        }
+    }
+    factsToSnippets.set(factName, factSnippets);
+}
 
 function embedSnippetsInFact(fact) {
     const clone = { ...fact };
@@ -57,12 +60,75 @@ function embedSnippetsInFact(fact) {
     return clone;
 }
 
+function checkFactWithEmbeddedSnippetsValid(fact) {
+    if (typeof fact.name !== "string") {
+        return "Fact must have a name property";
+    }
+    if (facts.has(fact.name)) {
+        return "Cannot add fact that already exists";
+    }
+    if (typeof fact.title !== "string") {
+        return "Fact must have a title property";
+    }
+    if (typeof fact.description !== "string") {
+        return "Fact must have a description property";
+    }
+    const tags = fact.tags;
+    if (!Array.isArray(tags)) {
+        return "Fact must have an array of tags";
+    }
+    if (tags.some(tag => typeof tag !== "string")) {
+        return "Fact tags must be strings";
+    }
+    if (!Array.isArray(fact.snippets)) {
+        for (const snippet of fact.snippets) {
+            const error = checkSnippetValid(snippet, fact);
+            if (error !== null) {
+                return error;
+            }
+        }
+    }
+    return null;
+}
+
+function checkSnippetValid(snippet, fact) {
+    if (typeof snippet.name !== "string") {
+        return "Snippet must have name property";
+    }
+    if (snippets.has(snippet.name)) {
+        return "Cannot add snippet that already exists";
+    }
+    if (typeof snippet.fact !== "string" || fact.name !== snippet.fact) {
+        return "Snippet must have fact property with the name of the parent fact";
+    }
+    if (typeof snippet.mappings !== "string") {
+        return "Snippet must have mappings property";
+    }
+    if (typeof snippet.source !== "string") {
+        return "Snippet must have source property";
+    }
+    if (typeof snippet.version !== "string") {
+        return "Snippet must have a version property";
+    }
+    if (typeof snippet.description !== "string") {
+        return "Snippet must have a description property";
+    }
+    const lines = snippet.snippet;
+    if (!Array.isArray(lines)) {
+        return "Snippet must have an array of snippet lines";
+    }
+    if (lines.some(tag => typeof tag !== "string")) {
+        return "Snippet lines must be strings";
+    }
+    return null;
+}
+
 app.get("/api/version", (req, res) => {
     res.send(version);
 });
 
 app.get("/api/tags", (req, res) => {
-    res.send(factTags);
+    res.send([...factTags]);
 });
 
 // Handler for singular fact by name
@@ -143,6 +209,20 @@ app.get("/api/fact_snippets", (req, res) => {
         return;
     }
     res.send(snippets);
+});
+
+// Post handler for clients adding facts
+app.post("/api/add_fact", (req, res) => {
+    const fact = req.body;
+    // Check that the fact contains all the correct data
+    const error = checkFactWithEmbeddedSnippetsValid(fact);
+    if (error !== null) {
+        res.status(400).send({ message: error });
+        return;
+    }
+
+    addFact(fact);
+    res.status(201).send();
 });
 
 app.use(express.static("client"));
