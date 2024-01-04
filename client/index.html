@@ -53,8 +53,8 @@
 
     </div>
 
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top footerFadeIn semi-transparent-light-gray-background" id="page_footer">
-        <div class="d-flex align-items-center">
+    <footer class="row d-flex flex-wrap align-items-center py-3 border-top footerFadeIn semi-transparent-light-gray-background" id="page_footer">
+        <div class="col d-flex align-items-center">
             <span class="ms-4 mb-3 mb-md-0 text-muted">
                 Designed by Matthew Wells <br>
                 <span class="text-muted" style="font-size: x-small">
@@ -72,12 +72,18 @@
                 </span>
             </span>
         </div>
-        <img class="absolute-horizontal-center" src="assets/omf-mark.png" alt="Obscure Minecraft Facts Mark" width="128px">
-        <a class="justify-content-end me-3" href="https://github.com/MatthewPriv/ObscureMinecraftFacts">
-            <img src="assets/github-mark.svg" width="24" height="24" alt="Github Mark">
-        </a>
+        <div class="col-md-auto d-flex align-items-center justify-content-center">
+            <img src="assets/omf-mark.png" alt="Obscure Minecraft Facts Mark" width="128px">
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <a class="me-3" href="https://github.com/MatthewPriv/ObscureMinecraftFacts">
+                <img src="assets/github-mark.svg" width="24" height="24" alt="Github Mark">
+            </a>
+        </div>
+
     </footer>
 
     <script type="module" src="index.js"></script>
 </body>
+
 </html>
