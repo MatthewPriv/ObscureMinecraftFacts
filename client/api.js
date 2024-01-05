@@ -1,21 +1,45 @@
 export async function addFact(name, title, description, tags, snippets) {
     try {
-        const response = await fetch("http://127.0.0.1:8080/api/add_fact", {
+        const factResponse = await fetch("http://127.0.0.1:8080/api/add_fact", {
             headers: {
                 "Content-Type": "application/json"
             },
             method: "POST",
             body: JSON.stringify({
-                name, title, description, tags, snippets
+                name,
+                title,
+                description,
+                tags,
+                snippets: snippets.map(snippet => snippet.name)
             })
         });
-        if (!response.ok) {
-            return JSON.parse(await response.text()).message;
+        if (!factResponse.ok) {
+            return JSON.parse(await factResponse.text()).message;
+        }
+        for (const snippet of snippets) {
+            const result = await addSnippet(snippet);
+            if (result !== null) {
+                return result;
+            }
         }
     } catch (e) {
         return false;
     }
     return true;
+}
+
+async function addSnippet(snippet) {
+    const response = await fetch("http://127.0.0.1:8080/api/add_snippet", {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(snippet)
+    });
+    if (!response.ok) {
+        return JSON.parse(await response.text()).message;
+    }
+    return null;
 }
 
 export async function getTags() {

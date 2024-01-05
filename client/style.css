@@ -1,7 +1,3 @@
-html {
-    overflow-y:scroll;
-}
-
 body {
     display: flex;
     flex-direction: column;
@@ -24,12 +20,6 @@ body {
 .wide-tooltip {
     --bs-tooltip-max-width: 500px;
     text-align: left;
-}
-
-.absolute-horizontal-center {
-    position: absolute;
-    right: 50%;
-    transform: translate(50%, 0px)
 }
 
 .semi-transparent-light-gray-background {
