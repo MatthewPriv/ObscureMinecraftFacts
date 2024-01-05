@@ -12,7 +12,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
 <body class="background">
-    <nav class="navbar navbar-expand-lg navbar-light semi-transparent-light-gray-background" style="border-bottom: 4px solid #A9A9A9;">
+    <nav class="navbar navbar-expand-lg navbar-light semi-transparent-light-gray-background footerFadeIn" style="border-bottom: 4px solid #A9A9A9;">
         <div class="container-fluid">
             <a class="navbar-brand">
                 <img src="assets/omf-logo.png" height="50" alt="Logo">
@@ -24,13 +24,92 @@
                 <div class="mb-2 mb-lg-0" id="fact_tags">
 
                 </div>
+
                 <form class="d-flex ms-auto" id="search_form">
+                    <button type="button" class="d-flex ms-auto btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#add_fact_modal">+</button>
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search_input">
                     <button class="btn btn-outline-success" id="search_button" type="submit">Search</button>
                 </form>
             </div>
         </div>
     </nav>
+
+    <div class="modal modal-xl fade" id="add_fact_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        Add Obscure Fact
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="fact_warn_alert">
+
+                </div>
+                <form id="add_fact_form">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="fact_name_input">Name <span class="text-muted">(must be unique)</span></label>
+                            <input type="text" class="form-control" id="fact_name_input" placeholder="Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fact_title_input">Title</label>
+                            <input type="text" class="form-control" id="fact_title_input" placeholder="Title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fact_description_input" class="form-label">Description</label>
+                            <textarea class="form-control" id="fact_description_input" placeholder="Description" style="resize: none"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Tags</label>
+                            <div class="m-3" id="tag_buttons">
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="fact_tags_input" placeholder="Tag Name" aria-label="Tag Name" aria-describedby="button_add_tag">
+                                <button class="btn btn-outline-secondary" type="button" id="button_add_tag">Add Tag</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Snippets</label>
+                            <div class="m-3" id="snippet_buttons">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="snippet_name_label">Name</span>
+                                <input type="text" class="form-control" id="snippet_name_input" placeholder="Snippet Name" aria-label="Snippet Name" aria-describedby="snippet_name_label">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="snippet_source_label">Snippet Source</span>
+                                <input type="text" class="form-control w-auto" id="snippet_source_input" placeholder="Source Class" aria-label="Snippet Source" aria-describedby="snippet_source_label">
+                                <label class="input-group-text" for="snippet_mapping_select">Mappings</label>
+                                <select class="form-select" id="snippet_mapping_select">
+                                    <option selected value="Mojang">Mojang</option>
+                                    <option value="Yarn">Yarn</option>
+                                    <option value="MCP">MCP</option>
+                                </select>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="snippet_version_label">Snippet Version</span>
+                                <input type="text" class="form-control" id="snippet_version_input" placeholder="Minecraft Version" aria-label="Minecraft Version" aria-describedby="snippet_version_label">
+                            </div>
+                            <div class="mb-3">
+                                <label for="snippet_input" class="form-label">Snippet</label>
+                                <textarea class="form-control font-monospace" id="snippet_input" placeholder="Snippet" style="resize: none"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="snippet_description_input" class="form-label">Snippet Description</label>
+                                <textarea class="form-control" id="snippet_description_input" placeholder="Snippet Description" style="resize: none"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="add_snippet_button">Add Snippet</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div aria-live="polite" aria-atomic="true" class="position-relative">
         <div class="toast-container position-absolute top-0 end-0 p-3">

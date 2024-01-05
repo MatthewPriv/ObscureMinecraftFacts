@@ -26,23 +26,23 @@ fs.readFile(join(__dirname, "assets", "facts.json"), "utf-8", (error, data) => {
         snippets.set(snippet.name, snippet);
     }
     for (const fact of json.facts) {
-        addFact(fact);
+        const factSnippets = [];
+        for (const snippetName of fact.snippets) {
+            const snippet = snippets[snippetName];
+            if (snippet) {
+                factSnippets.push(snippet);
+            }
+        }
+        addFact(fact, factSnippets);
     }
 });
 
-function addFact(fact) {
+function addFact(fact, factSnippets) {
     for (const tag of fact.tags) {
         factTags.add(tag);
     }
     const factName = fact.name;
     facts.set(factName, fact);
-    const factSnippets = [];
-    for (const snippetName of fact.snippets) {
-        const snippet = snippets[snippetName];
-        if (snippet) {
-            factSnippets.push(snippet);
-        }
-    }
     factsToSnippets.set(factName, factSnippets);
 }
 
@@ -221,7 +221,13 @@ app.post("/api/add_fact", (req, res) => {
         return;
     }
 
-    addFact(fact);
+    const factSnippets = fact.snippets;
+    fact.snippets = factSnippets.map(snippet => {
+        const name = snippet.name;
+        snippets.set(name, snippet);
+        return name;
+    });
+    addFact(fact, factSnippets);
     res.status(201).send();
 });
 

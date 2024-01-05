@@ -1,3 +1,23 @@
+export async function addFact(name, title, description, tags, snippets) {
+    try {
+        const response = await fetch("http://127.0.0.1:8080/api/add_fact", {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({
+                name, title, description, tags, snippets
+            })
+        });
+        if (!response.ok) {
+            return JSON.parse(await response.text()).message;
+        }
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 export async function getTags() {
     try {
         const response = await fetch("http://127.0.0.1:8080/api/tags");
