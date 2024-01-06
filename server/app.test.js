@@ -85,20 +85,20 @@ describe("Test GET /api/facts", () => {
 
 describe("Test GET /api/fact_snippet", () => {
     test("returns correct snippet json", async () => {
-        const response = await request(app).get("/api/fact_snippet?name=minecart_furnace_destroy");
+        const response = await request(app).get("/api/snippet?name=minecart_furnace_destroy");
         expectJson(response);
         expectStatusCode(response, 200);
         expectBody(response, snippets.get("minecart_furnace_destroy"));
     });
 
     test("fails with non-existent snippet", async () => {
-        const response = await request(app).get("/api/fact_snippet?name=123456789");
+        const response = await request(app).get("/api/snippet?name=123456789");
         expectJson(response);
         expectStatusCode(response, 400);
     });
 
     test("fails with no name parameter", async () => {
-        const response = await request(app).get("/api/fact_snippet?");
+        const response = await request(app).get("/api/snippet?");
         expectJson(response);
         expectStatusCode(response, 400);
     });

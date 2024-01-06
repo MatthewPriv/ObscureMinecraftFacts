@@ -186,7 +186,7 @@ app.get("/api/facts", (req, res) => {
 });
 
 // Handler for getting a specific snippet by name
-app.get("/api/fact_snippet", (req, res) => {
+app.get("/api/snippet", (req, res) => {
     const snippetName = req.query.name;
     if (!snippetName) {
         // Invalid body - Bad Request 400
@@ -228,7 +228,7 @@ app.post("/api/add_snippet", (req, res) => {
     }
 
     addSnippet(snippet);
-    res.location(`/api/fact_snippet?name=${snippet.name}`).status(201).send({ message: "New snippet was created" });
+    res.location(`/api/snippet?name=${snippet.name}`).status(201).send({ message: "New snippet was created" });
     writeFactsJson();
 });
 
