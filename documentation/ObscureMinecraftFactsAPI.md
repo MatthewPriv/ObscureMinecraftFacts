@@ -1,5 +1,18 @@
 # Obscure Minecraft Facts API
 
+## Contents
+
+>[Tags](#tags)
+  - [`GET /api/tags`](#get-apitags)
+> [Facts](#facts)
+  - [`GET /api/fact`](#get-apifact)
+  - [`GET /api/facts`](#get-apifacts)
+  - [`POST /api/add_fact`](#post-apiaddfact)
+> [Snippets](#snippets)
+  - [`GET /api/snippet`](#get-apisnippet)
+  - [`POST /api/add_snippet`](#post-apiaddsnippet)
+
+
 ## Tags
 
 ### `GET /api/tags`
