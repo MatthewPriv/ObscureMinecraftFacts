@@ -213,7 +213,7 @@ app.post("/api/add_fact", (req, res) => {
     }
 
     addFact(fact);
-    res.status(201).send();
+    res.location(`/api/fact?name=${fact.name}`).status(201).send({ message: "New fact was created" });
     writeFactsJson();
 });
 
@@ -228,7 +228,7 @@ app.post("/api/add_snippet", (req, res) => {
     }
 
     addSnippet(snippet);
-    res.status(201).send();
+    res.location(`/api/fact_snippet?name=${snippet.name}`).status(201).send({ message: "New snippet was created" });
     writeFactsJson();
 });
 

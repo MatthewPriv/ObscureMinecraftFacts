@@ -116,9 +116,10 @@ describe("Test POST /api/add_fact", () => {
 
     test("adds fact to server", async () => {
         const response = await request(app).post("/api/add_fact").send(fact);
+        expectJson(response);
         expectStatusCode(response, 201);
 
-        const next = await request(app).get(`/api/fact?name=${fact.name}`);
+        const next = await request(app).get(response.headers.location);
         expectJson(next);
         expectStatusCode(next, 200);
         expectBody(next, fact);
@@ -166,9 +167,10 @@ describe("Test POST /api/add_snippet", () => {
 
     test("adds snippet to server", async () => {
         const response = await request(app).post("/api/add_snippet").send(snippet);
+        expectJson(response);
         expectStatusCode(response, 201);
 
-        const next = await request(app).get(`/api/fact_snippet?name=${snippet.name}`);
+        const next = await request(app).get(response.headers.location);
         expectJson(next);
         expectStatusCode(next, 200);
         expectBody(next, snippet);
