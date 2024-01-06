@@ -16,8 +16,11 @@ const factTags = new Set();
 // so we don't need to do this on the fly...
 const factsToSnippets = new Map();
 
+let writeToFile = false;
+const factsPath = join(__dirname, "assets", "facts.json");
+
 {
-    const data = fs.readFileSync(join(__dirname, "assets", "facts.json"), "utf-8");
+    const data = fs.readFileSync(factsPath, "utf-8");
     const json = JSON.parse(data);
 
     for (const fact of json.facts) {
@@ -26,6 +29,21 @@ const factsToSnippets = new Map();
     for (const snippet of json.snippets) {
         addSnippet(snippet);
     }
+}
+
+function saveFacts() {
+    writeToFile = true;
+}
+
+function writeFactsJson() {
+    if (!writeToFile) {
+        return;
+    }
+    const json = {
+        facts: [...facts.values()],
+        snippets: [...snippets.values()]
+    };
+    fs.writeFile(factsPath, JSON.stringify(json), "utf-8");
 }
 
 function addFact(fact) {
@@ -196,6 +214,7 @@ app.post("/api/add_fact", (req, res) => {
 
     addFact(fact);
     res.status(201).send();
+    writeFactsJson();
 });
 
 // Post handler for clients adding snippets
@@ -210,8 +229,9 @@ app.post("/api/add_snippet", (req, res) => {
 
     addSnippet(snippet);
     res.status(201).send();
+    writeFactsJson();
 });
 
 app.use(express.static("client"));
 
-module.exports = { app, facts, snippets };
+module.exports = { app, facts, snippets, factsToSnippets, saveFacts };

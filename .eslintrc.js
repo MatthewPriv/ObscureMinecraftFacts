@@ -11,6 +11,7 @@ module.exports = {
         }],
         // Weird errors saying bootstrap is undefined, when it is not...
         "no-undef": "off",
+        "no-trailing-spaces": "off",
         "no-new": "off"
     }
 };
