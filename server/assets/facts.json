@@ -35,6 +35,18 @@
       "snippets": [
         "jungle_mob_spawning"
       ]
+    },
+    {
+      "name": "asynchronous_stained_glass",
+      "title": "Asynchronous Stained Glass",
+      "description": "Minecraft is designed to be a single threaded game. This means that all the core game code runs on a single thread, which we will call the <b>main thread</b>, while there are some aspects of the game that are ran on other threads such as networking the core game all runs on the main thread. Because of this, the game is not designed to handle running code on asynchronous threads and doing so could lead to race conditions which is where two separate threads are trying to access and/or modify the same data.\n\nHowever in versions 1.12.2 and below the developers left in some core game code which ran on a asynchronous thread. In Minecraft when you place stained glass over a beacon the beacon beam will change colour according to the colour of the stained glass, in order to do this you simply just check all the possible blocks below the stained glass, if theres a beacon then you update it. The developers thought that this might be expensive so they thought they could just run it asynchronously since it wasn't that important.",
+      "tags": [
+        "Redstone",
+        "Technical"
+      ],
+      "snippets": [
+        "block_beacon_update_color_async"
+      ]
     }
   ],
   "snippets": [
@@ -120,6 +132,42 @@
         "}"
       ],
       "description": "As you can see in the snippet, this is responsible for determining mob spawning in the jungle, this adds parrots, ocelots, and pandas. However ocelots are put under the 'monster' category, <code>addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 2, 1, 3))</code>, making them come under the monster spawn limits."
+    },
+    {
+      "name": "block_beacon_update_color_async",
+      "fact": "asynchronous_stained_glass",
+      "mappings": "MCP",
+      "source": "net.minecraft.block.BlockBeacon",
+      "version": "1.12.2",
+      "snippet": [
+        "public static void updateColorAsync(final World world, final BlockPos glassPos) {",
+        "    HttpUtil.DOWNLOADER_EXECUTOR.submit(() -> {",
+        "        Chunk chunk = world.getChunk(glassPos);",
+        "",
+        "        for (int i = glassPos.getY() - 1; i >= 0; --i) {",
+        "            final BlockPos blockPos = new BlockPos(glassPos.getX(), i, glassPos.getZ());",
+        "",
+        "            if (!chunk.canSeeSky(blockPos)) {",
+        "                break;",
+        "            }",
+        "",
+        "            IBlockState state = world.getBlockState(blockPos);",
+        "",
+        "            if (state.getBlock() == Blocks.BEACON) {",
+        "                ((WorldServer) world).addScheduledTask(() -> {",
+        "                    TileEntity tileEntity = world.getTileEntity(blockPos);",
+        "",
+        "                    if (tileEntity instanceof TileEntityBeacon) {",
+        "                        ((TileEntityBeacon) tileEntity).updateBeacon();",
+        "                        world.addBlockEvent(blockPos, Blocks.BEACON, 1, 0);",
+        "                    }",
+        "                });",
+        "            }",
+        "        }",
+        "    });",
+        "}"
+      ],
+      "description": "This is the code that runs whether a stained glass is placed in the world. As you can see the code is pushed onto the <code>HttpUtil.DOWNLOADER_EXECUTOR</code> which is <b>not</b> the main thread. However inside this asynchronous code the method <code>world.getChunk</code> is called. This is where race conditions can start to happen, I will not go into detail here but after code diggers found this they started to think of ways to exploit this to intentionally cause race conditions to try and obtain unobtainable items in the game.\nHere is a <a href=\"https://youtu.be/rNcFv5tccrg\">detailed video of falling block</a> which exploits this code in order to do what was considered impossible."
     }
   ]
 }
