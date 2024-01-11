@@ -1,16 +1,15 @@
 {
   "name": "obscure-minecraft-facts",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A server that provides a REST API to retrieve Obscure Minecraft Facts!",
   "scripts": {
     "start": "node server/server.js",
     "pretest": "eslint \"**/*.js\"",
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Matthew Wells",
+  "license": "MIT",
   "dependencies": {
     "path": "^0.12.7",
     "body-parser": "^1.20.2",

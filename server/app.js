@@ -43,7 +43,7 @@ function writeFactsJson() {
         facts: [...facts.values()],
         snippets: [...snippets.values()]
     };
-    fs.writeFile(factsPath, JSON.stringify(json), "utf-8");
+    fs.writeFileSync(factsPath, JSON.stringify(json, null, 2), "utf8");
 }
 
 function addFact(fact) {
