@@ -47,6 +47,42 @@
       "snippets": [
         "block_beacon_update_color_async"
       ]
+    },
+    {
+      "name": "wandering_zombies",
+      "title": "Wandering Zombies",
+      "description": "There was a very interesting bug involving mob pathfinding, more specifically Zombie pathfinding in versions prior to 1.19. If the player were to place a turtle egg at <code>(0, 0, 0)</code> they would notice that Zombies in their world would mysteriously start pathfinding towards there. It is a game mechanic that Zombies pathfind towards turtle eggs as they want to trample on them, however it is unusual that Zombies <b>always</b> pathfind to an egg at <code>(0, 0, 0)</code> even if they are thousands or even millions of blocks away.",
+      "tags": [
+        "Entities"
+      ],
+      "snippets": [
+        "move_to_block_goal_find_nearest_block",
+        "remove_block_goal_can_use"
+      ]
+    },
+    {
+      "name": "dimensional_piston_teleportation",
+      "title": "Dimensional Piston Teleportation",
+      "description": "When you go through an end portal in Minecraft you expect to be teleported to the end platform which is where you always end up. However there is a bug which allows you to teleport to the end with your overworld coordinates. By placing a piston under the end portal facing horizontally and pushing the player horizontally under the end portal you get teleported to the end but with your overworld coordinates. The reason for this is a little complex and for this reason the code snippets for this have been simplified.",
+      "tags": [
+        "Entities"
+      ],
+      "snippets": [
+        "server_game_packet_listener_impl_handle_move_player",
+        "entity_move",
+        "end_portal_block_entity_inside"
+      ]
+    },
+    {
+      "name": "undefined_logs",
+      "title": "Undefined Logs",
+      "description": "There was a bug in versions 1.8 and before where sometimes an oak log would generate at <code>(0, 0, 0)</code>. The reason for this is because of a divide by 0 error. In Java if you divide by 0 when using floating point numbers it will return the <code>NaN</code> float, however if you cast this float into an integer it will transform it into <code>0</code>. Lets have a look at the snippet below.",
+      "tags": [
+        "Biomes"
+      ],
+      "snippets": [
+        "world_gen_big_tree_generate_limbs"
+      ]
     }
   ],
   "snippets": [
@@ -168,6 +204,186 @@
         "}"
       ],
       "description": "This is the code that runs whether a stained glass is placed in the world. As you can see the code is pushed onto the <code>HttpUtil.DOWNLOADER_EXECUTOR</code> which is <b>not</b> the main thread. However inside this asynchronous code the method <code>world.getChunk</code> is called. This is where race conditions can start to happen, I will not go into detail here but after code diggers found this they started to think of ways to exploit this to intentionally cause race conditions to try and obtain unobtainable items in the game.\nHere is a <a href=\"https://youtu.be/rNcFv5tccrg\">detailed video of falling block</a> which exploits this code in order to do what was considered impossible."
+    },
+    {
+      "name": "move_to_block_goal_find_nearest_block",
+      "fact": "wandering_zombies",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.entity.ai.goal.MoveToBlockGoal",
+      "version": "1.18.2",
+      "snippet": [
+        "protected boolean findNearestBlock() {",
+        "\tint i = this.searchRange;",
+        "\tint j = this.verticalSearchRange;",
+        "\tBlockPos blockPos = this.mob.blockPosition();",
+        "\tBlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();",
+        "",
+        "\tfor(int k = this.verticalSearchStart; k <= j; k = k > 0 ? -k : 1 - k) {",
+        "\t\tfor(int l = 0; l < i; ++l) {",
+        "\t\t\tfor(int m = 0; m <= l; m = m > 0 ? -m : 1 - m) {",
+        "\t\t\t\tfor(int n = m < l && m > -l ? l : 0; n <= l; n = n > 0 ? -n : 1 - n) {",
+        "\t\t\t\t\tmutableBlockPos.setWithOffset(blockPos, m, k - 1, n);",
+        "\t\t\t\t\tif (this.mob.isWithinRestriction(mutableBlockPos) && this.isValidTarget(this.mob.level(), mutableBlockPos)) {",
+        "\t\t\t\t\t\tthis.blockPos = mutableBlockPos;",
+        "\t\t\t\t\t\treturn true;",
+        "\t\t\t\t\t}",
+        "\t\t\t\t}",
+        "\t\t\t}",
+        "\t\t}",
+        "\t}",
+        "",
+        "\treturn false;",
+        "}"
+      ],
+      "description": "This is the code that determines where the Zombie should pathfind to. It searches around the mob and if any positions are valid targets as determined by <code>this.isValidTarget</code> then that is where the Zombie will try to pathfind to. Otherwise the target position, <code>this.blockPos</code> is unchanged. This is significant because by default it is assigned to <code>BlockPos.ZERO</code> which corresponds to <code>(0, 0, 0)</code>."
+    },
+    {
+      "name": "remove_block_goal_can_use",
+      "fact": "wandering_zombies",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.entity.ai.goal.RemoveBlockGoal",
+      "version": "1.18.2",
+      "snippet": [
+        "@Override",
+        "public boolean canUse() {",
+        "\tif (!this.removerMob.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {",
+        "\t\treturn false;",
+        "\t} ",
+        "\tif (this.nextStartTick > 0) {",
+        "\t\t--this.nextStartTick;",
+        "\t\treturn false;",
+        "\t} ",
+        "\tif (this.findNearestBlock()) {",
+        "\t\tthis.nextStartTick = reducedTickDelay(20);",
+        "\t\treturn true;",
+        "\t} ",
+        "\tthis.nextStartTick = this.nextStartTick(this.mob);",
+        "\treturn false;",
+        "}",
+        "",
+        "private boolean findNearestBlock() {",
+        "\treturn this.blockPos != null && this.isValidTarget(this.mob.level, this.blockPos) ? true : this.findNearestBlock();",
+        "}"
+      ],
+      "description": "This code determines whether this AI goal can be used or not, as you can see one of the conditions in <code>canUse</code> method is <code>this.findNearestBlock</code> which is also included in this snippet. This method checks whether the current target position <code>this.blockPos</code> is <code>null</code> and then check whether it is a valid target. If you recall from the last snippet the target position is initialised to <code>BlockPos.ORIGIN</code> <b>not</b> <code>null</code> and thus this check is <code>null</code> check is redundant. If the block position was not initialised properly it will <b>always</b> check the origin position, thus if you place a turtle egg at the origin Zombies will pathfind to it."
+    },
+    {
+      "name": "server_game_packet_listener_impl_handle_move_player",
+      "fact": "dimensional_piston_teleportation",
+      "mappings": "Mojang",
+      "source": "net.minecraft.server.network.ServerGamePacketListenerImpl",
+      "version": "1.20.4",
+      "snippet": [
+        "@Override",
+        "public void handleMovePlayer(ServerboundMovePlayerPacket packet) { ",
+        "\tServerLevel level = player.serverLevel();",
+        "\t",
+        "\tdouble newX = clampHorizontal(packet.getX(this.player.getX()));",
+        "\tdouble newY = clampVertical(packet.getY(this.player.getY()));",
+        "\tdouble newZ = clampHorizontal(packet.getZ(this.player.getZ()));",
+        "\tfloat newYRot = Mth.wrapDegrees(packet.getYRot(this.player.getYRot()));",
+        "\tfloat newXRot = Mth.wrapDegrees(packet.getXRot(this.player.getXRot()));",
+        "",
+        "\t// ...",
+        "",
+        "\tdouble currentX = this.player.getX();",
+        "\tdouble currentY = this.player.getY();",
+        "\tdouble currentZ = this.player.getZ();",
+        "",
+        "\t// ...",
+        "",
+        "\tAABB boundingBox = this.player.getBoundingBox();",
+        "\tdouble deltaX = newX - this.lastGoodX;",
+        "\tdouble deltaY = newY - this.lastGoodY;",
+        "\tdouble deltaZ = newZ - this.lastGoodZ;",
+        "",
+        "\t// ...",
+        "",
+        "\tthis.player.move(MoverType.PLAYER, new Vec3(deltaX, deltaY, deltaZ));",
+        "",
+        "\t// ...",
+        "",
+        "\tif ((!movedWrongly || !level.noCollision(this.player, boundingBox)) && !this.isPlayerCollidingWithAnythingNew(level, boundingBox, newX, newY, newZ)) {",
+        "\t\t// ...",
+        "\t} else {",
+        "\t\tthis.teleport(currentX, currentY, currentZ, newYRot, newXRot);",
+        "\t\t// ...",
+        "\t}",
+        "}"
+      ],
+      "description": "This is the code for handling player movement packets from the client. I have commented out any irrelevant code. This code will be called after the player has been moved by the piston. So the first important call is to <code>this.player.move</code> which you can see in the snippet below. This checks the collision of the player and shifts the player up, and the player has now changed dimensions to the End, for more detail read the snippet below before continuing. \n<br><br>\nNow we move onto the if check, the important check here is the <code>!this.isPlayerCollidingWithAnythingNew(level, boundingBox, newX, newY, newZ)</code>. This checks whether the player's bounding box has changed which it has and as such the game believes this movement to be invalid. So we are directed to the else statement and this teleports us back to our current position (ignoring our new position), normally this would just rubber band the player back to their old position on the client, however because the player has now <b>changed dimensions</b> this actually teleports us to these coordinates in the End dimension."
+    },
+    {
+      "name": "entity_move",
+      "fact": "dimensional_piston_teleportation",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.entity.Entity",
+      "version": "1.20.4",
+      "snippet": [
+        "public void move(MoverType type, Vec3 motion) {",
+        "\t// ...",
+        "",
+        "\tVec3 delta = this.collide(motion);",
+        "\tdouble distance = delta.lengthSqr();",
+        "\tif (distance > 1.0E-7) {",
+        "\t\t// ...",
+        "",
+        "\t\tthis.setPos(this.getX() + delta.x, this.getY() + delta.y, this.getZ() + delta.z);",
+        "\t}",
+        "",
+        "\t// ...",
+        "\t",
+        "\tthis.tryCheckInsideBlocks();",
+        "",
+        "\t// ...",
+        "}"
+      ],
+      "description": "This snippet shows the move method which handles moving entities with some given motion delta. This firstly checks all entity collisions with <code>this.collide</code> which returns the modified delta taking into account the collisions, in our case because we have just been pushed by a piston we are now colliding with the piston and the game wants to push us up, which means the <code>delta</code> variable is the <code>motion</code> variable but shifted 1 in the y axis.\n<br><br>\nThen the game sets the entity's position which moves the player up by 1 because the of the collision delta, this modifies the player's bounding box to also be shifted up by one. Next for the <code>this.tryCheckInsideBlocks()</code> method which checks collisions with blocks, in our case we are interested in the collision with the end portal block, you can see the snippet for this below. This changes our dimension and teleports the player to the end spawn platform. Now we can return back to the <code>handleMovePlayer</code> method in the snippet above."
+    },
+    {
+      "name": "end_portal_block_entity_inside",
+      "fact": "dimensional_piston_teleportation",
+      "mappings": "Mojang",
+      "source": "net.minecraft.world.level.block.EndPortalBlock",
+      "version": "1.20.4",
+      "snippet": [
+        "@Override",
+        "public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {",
+        "\tif (level instanceof ServerLevel && entity.canChangeDimensions() && Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())), state.getShape(level, pos), BooleanOp.AND)) {",
+        "\t\tResourceKey<Level> resourceKey = level.dimension() == Level.END ? Level.OVERWORLD : Level.END;",
+        "\t\tServerLevel serverLevel = ((ServerLevel) level).getServer().getLevel(resourceKey);",
+        "\t\tif (serverLevel == null) {",
+        "\t\t\treturn;",
+        "\t\t}",
+        "",
+        "\t\tentity.changeDimension(serverLevel);",
+        "\t}",
+        "}"
+      ],
+      "description": "This snippet shows what happens when an entity collides with the end portal block. It checks whether the entity is able to change dimensions and whether it is actually intersecting with the hitbox of the end portal. If it is then the <code>entity.changeDimension</code> method is called which changes the entities dimension and teleports them to an appropriate position, in our case when the player teleports to the end they get teleported to the end platform. Now you can return to the <code>move</code> method in the snippet above."
+    },
+    {
+      "name": "world_gen_big_tree_generate_limbs",
+      "fact": "undefined_logs",
+      "mappings": "MCP",
+      "source": "net.minecraft.world.gen.feature.WorldGenBigTree",
+      "version": "1.8",
+      "snippet": [
+        "void generateLimbs(BlockPos startPos, BlockPos endPos, Block block) {",
+        "    BlockPos pos = endPos.add(-startPos.getX(), -startPos.getY(), -startPos.getZ());",
+        "    int distance = this.getGreatestDistance(pos);",
+        "    float deltaX = pos.getX() / (float) distance;",
+        "    float deltaY = pos.getY() / (float) distance;",
+        "    float deltaZ = pos.getZ() / (float) distance;",
+        "",
+        "    for (int i = 0; j <= distance; ++i) {",
+        "        BlockPos logPos = startPos.add(0.5F + i * deltaX, 0.5F + i * deltaY, 0.5F + i * deltaZ);",
+        "        BlockLog.EnumAxis axis = this.calculateAxis(startPos, logPos);",
+        "        this.setBlockAndNotifyAdequately(this.world, logPos, block.getDefaultState().withProperty(BlockLog.LOG_AXIS, axis));",
+        "    }",
+        "}"
+      ],
+      "description": "The bug in the code is that we are dividing by <code>distance</code> where it is possible that is it 0. As a result <code>deltaX</code>, <code>deltaY</code>, and <code>deltaZ</code> will all be <code>NaN</code>, then in out for loop we use this to add to our starting position. Any floating point number added or multiplied by <code>NaN</code> will simply return <code>NaN</code> so we add this to our starting position then cast to integers and our <code>logPos</code> will always be <code>(0, 0, 0)</code>, then the code calls <code>this.setBlockAndNotifyAdequately</code> which places the block in the world."
     }
   ]
 }
