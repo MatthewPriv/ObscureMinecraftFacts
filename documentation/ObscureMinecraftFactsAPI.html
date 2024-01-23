@@ -1,0 +1,688 @@
+
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Read Me</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+            body {
+  font: 400 16px/1.5 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #111;
+  background-color: #fdfdfd;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-feature-settings: 'kern' 1;
+  -moz-font-feature-settings: 'kern' 1;
+  -o-font-feature-settings: 'kern' 1;
+  font-feature-settings: 'kern' 1;
+  font-kerning: normal;
+  padding: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    padding: 5px;
+  }
+
+  main {
+    padding: 0px 20px 20px 20px !important;
+  }
+}
+
+main {
+  margin: 0px;
+  max-width: 900px;
+  border: 1px solid #e1e4e8;
+  padding: 10px 40px;
+  padding-bottom: 20px;
+  border-radius: 2px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+hr {
+  color: #bbb;
+  background-color: #bbb;
+  height: 1px;
+  flex: 0 1 auto;
+  margin: 1em 0;
+  padding: 0;
+  border: none;
+}
+
+/**
+ * Links
+ */
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+a:visited {
+  color: #0366d6;
+}
+a:hover {
+  color: #0366d6;
+  text-decoration: underline;
+}
+
+pre {
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  font-size: 85%;
+  line-height: 1.45;
+  overflow: auto;
+  padding: 16px;
+}
+
+/**
+  * Code blocks
+  */
+
+code {
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px;
+  font-size: 85%;
+  margin: 0;
+  word-wrap: break-word;
+  padding: 0.2em 0.4em;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
+    monospace;
+}
+
+pre > code {
+  background-color: transparent;
+  border: 0;
+  display: inline;
+  line-height: inherit;
+  margin: 0;
+  overflow: visible;
+  padding: 0;
+  word-wrap: normal;
+  font-size: 100%;
+}
+
+/**
+ * Blockquotes
+ */
+blockquote {
+  margin-left: 30px;
+  margin-top: 0px;
+  margin-bottom: 16px;
+  border-left-width: 3px;
+  padding: 0 1em;
+  color: #828282;
+  border-left: 4px solid #e8e8e8;
+  padding-left: 15px;
+  font-size: 18px;
+  letter-spacing: -1px;
+  font-style: italic;
+}
+blockquote * {
+  font-style: normal !important;
+  letter-spacing: 0;
+  color: #6a737d !important;
+}
+
+/**
+ * Tables
+ */
+table {
+  border-spacing: 2px;
+  display: block;
+  font-size: 14px;
+  overflow: auto;
+  width: 100%;
+  margin-bottom: 16px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}
+
+th {
+  font-weight: 600;
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}
+
+tr {
+  background-color: #fff;
+  border-top: 1px solid #c6cbd1;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+
+/**
+ * Others
+ */
+
+img {
+  max-width: 100%;
+}
+
+p {
+  line-height: 24px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #24292e;
+}
+
+ul {
+  margin-top: 0;
+}
+
+li {
+  color: #24292e;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+li + li {
+  margin-top: 0.25em;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  color: #24292e;
+}
+
+a:visited {
+  color: #0366d6;
+}
+
+h1,
+h2,
+h3 {
+  border-bottom: 1px solid #eaecef;
+  color: #111;
+  /* Darker */
+}
+
+            </style>
+            <style>
+            pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+/*!
+  Theme: GitHub
+  Description: Light theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-light
+  Current colors taken from GitHub's CSS
+*/
+.hljs {
+  color: #24292e;
+  background: #ffffff
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  /* prettylights-syntax-keyword */
+  color: #d73a49
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  /* prettylights-syntax-entity */
+  color: #6f42c1
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  /* prettylights-syntax-constant */
+  color: #005cc5
+}
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+  /* prettylights-syntax-string */
+  color: #032f62
+}
+.hljs-built_in,
+.hljs-symbol {
+  /* prettylights-syntax-variable */
+  color: #e36209
+}
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  /* prettylights-syntax-comment */
+  color: #6a737d
+}
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  /* prettylights-syntax-entity-tag */
+  color: #22863a
+}
+.hljs-subst {
+  /* prettylights-syntax-storage-modifier-import */
+  color: #24292e
+}
+.hljs-section {
+  /* prettylights-syntax-markup-heading */
+  color: #005cc5;
+  font-weight: bold
+}
+.hljs-bullet {
+  /* prettylights-syntax-markup-list */
+  color: #735c0f
+}
+.hljs-emphasis {
+  /* prettylights-syntax-markup-italic */
+  color: #24292e;
+  font-style: italic
+}
+.hljs-strong {
+  /* prettylights-syntax-markup-bold */
+  color: #24292e;
+  font-weight: bold
+}
+.hljs-addition {
+  /* prettylights-syntax-markup-inserted */
+  color: #22863a;
+  background-color: #f0fff4
+}
+.hljs-deletion {
+  /* prettylights-syntax-markup-deleted */
+  color: #b31d28;
+  background-color: #ffeef0
+}
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+  
+}
+            </style>
+          </head>
+          <body>
+            <main>
+        <h1 id="obscure-minecraft-facts-api">Obscure Minecraft Facts API</h1>
+<h2 id="contents">Contents</h2>
+<blockquote>
+  <p><a href="#tags">Tags</a></p>
+  <ul>
+  <li><a href="#get-apitags"><code>GET /api/tags</code></a><br />
+  </ul>
+  <a href="#facts">Facts</a></li>
+  <ul>
+  <li><a href="#get-apifact"><code>GET /api/fact</code></a></li>
+  <li><a href="#get-apifacts"><code>GET /api/facts</code></a></li>
+  <li><a href="#post-apiaddfact"><code>POST /api/add_fact</code></a><br />
+  </ul>
+  <a href="#snippets">Snippets</a></li>
+  <ul>
+  <li><a href="#get-apisnippet"><code>GET /api/snippet</code></a></li>
+  <li><a href="#post-apiaddsnippet"><code>POST /api/add_snippet</code></a></li>
+  </ul>
+</blockquote>
+<h2 id="tags">Tags</h2>
+<h3 id="get-apitags"><code>GET /api/tags</code></h3>
+<p>This returns an array of all the available fact tags. These can then be used to filter facts by, see </p>
+<h4 id="query-parameters">Query Parameters</h4>
+<p>There are no parameters for this call.</p>
+<h4 id="response">Response</h4>
+<p>This will always respond with status <code>200</code> with the body being <code>json</code> comprised of an array of strings.</p>
+<h4 id="example-response">Example Response</h4>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-string">&quot;Entities&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-string">&quot;Items&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-string">&quot;Redstone&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-string">&quot;Biomes&quot;</span>
+<span class="hljs-punctuation">]</span></code></pre>
+<h2 id="facts">Facts</h2>
+<h3 id="get-apifact"><code>GET /api/fact</code></h3>
+<p>This gets a fact for a given name, passed as a query parameter.</p>
+<h4 id="query-parameters-1">Query Parameters</h4>
+<table>
+<thead>
+<tr>
+<th id="parameter">Parameter</th>
+<th id="required">Required</th>
+<th id="type">Type</th>
+<th id="description">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The unique name of the fact you want to get.</td>
+</tr>
+<tr>
+<td><code>embed_snippets</code></td>
+<td>No</td>
+<td>Boolean</td>
+<td>Whether the returned fact will have embedded snippets data or just the snippet names.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-1">Response</h4>
+<p>This will respond with status <code>200</code> if the request was valid and a fact was returned. If the name was not given or doesn't exist <code>400</code> will be returned.</p>
+<p>The response body will be in <code>json</code> either containing a fact is successful or an object with a message property, explaining why the call failed.<br />
+See examples of what fact objects are like below.</p>
+<h4 id="example-responses">Example Responses</h4>
+<p>Called <code>/api/fact?name=explosive_furnace_minecarts</code>:</p>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;explosive_furnace_minecarts&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Explosive Furnace Minecarts&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;In versions prior to Minecraft 1.19 if the Furnace Minecart entity was destroyed by an explosion then it would only drop a Minecart item. This was inconsistent with the other Minecart items, for example the Chest Minecart would drop a Chest and a Minecart. In versions 1.19 and later this behaviour was changed so that the entity would drop it&#x27;s combined item, inadvertently fixing this &#x27;bug&#x27;.&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;Entities&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;Items&quot;</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;snippets&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;minecart_furnace_destroy&quot;</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<p>Called <code>/api/fact?name=explosive_furnace_minecarts?embed_snippets=true</code>:</p>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;explosive_furnace_minecarts&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Explosive Furnace Minecarts&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;In versions prior to Minecraft 1.19 if the Furnace Minecart entity was destroyed by an explosion then it would only drop a Minecart item. This was inconsistent with the other Minecart items, for example the Chest Minecart would drop a Chest and a Minecart. In versions 1.19 and later this behaviour was changed so that the entity would drop it&#x27;s combined item, inadvertently fixing this &#x27;bug&#x27;.&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;Entities&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;Items&quot;</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;snippets&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;minecart_furnace_destroy&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;fact&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;explosive_furnace_minecarts&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;mappings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Mojang&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;net.minecraft.world.entity.vehicle.MinecartFurnace&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.18.2&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;snippet&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">&quot;@Override&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;public void destroy(DamageSource source) {&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;    super.destroy(source);&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;    if (!source.isExplosion() &amp;&amp; this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;        this.spawnAtLocation(Blocks.FURNACE);&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;    }&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;}&quot;</span>
+      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;The reason for the behaviour is because of the &lt;code&gt;!source.isExplosion()&lt;/code&gt; check.&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<p>Called <code>/api/fact</code>:</p>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 400</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Request must include name parameter&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<p>Called <code>/api/fact?name=123456789</code> (invalid name):</p>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 400</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Fact doesn&#x27;t exist&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<h3 id="get-apifacts"><code>GET /api/facts</code></h3>
+<p>This gets a list of fact names with options to filter by tags and or by search.</p>
+<h4 id="query-parameters-2">Query Parameters</h4>
+<table>
+<thead>
+<tr>
+<th id="parameter">Parameter</th>
+<th id="required">Required</th>
+<th id="type">Type</th>
+<th id="description">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tag</code></td>
+<td>No</td>
+<td>String(s)</td>
+<td>The tags you want to filter by, there may be multiple tags.</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>No</td>
+<td>String</td>
+<td>The phrase you wish to filter your search by.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-2">Response</h4>
+<p>This will always respond with status <code>200</code> with the response body in <code>json</code> being comprised of an array of strings.</p>
+<h4 id="example-responses-1">Example Responses</h4>
+<p>Called <code>/api/facts</code>:</p>
+<pre><code class="hljs json5 language-json5">[
+  <span class="hljs-string">&quot;explosive_furnace_minecarts&quot;</span>,
+  <span class="hljs-string">&quot;quasi_connectivity&quot;</span>,
+  <span class="hljs-string">&quot;scary_ocelots&quot;</span>
+]</code></pre>
+<p>Called <code>/api/facts?tag=Biomes</code>:</p>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-string">&quot;scary_ocelots&quot;</span>
+<span class="hljs-punctuation">]</span></code></pre>
+<p>Called <code>/api/facts?tag=Biomes&amp;tag=Redstone</code>:</p>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-string">&quot;quasi_connectivity&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-string">&quot;scary_ocelots&quot;</span>
+<span class="hljs-punctuation">]</span></code></pre>
+<p>Called <code>/api/facts?search=furnace</code>:</p>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">[</span>
+  <span class="hljs-string">&quot;explosive_furnace_minecarts&quot;</span>
+<span class="hljs-punctuation">]</span></code></pre>
+<h3 id="post-apiadd_fact"><code>POST /api/add_fact</code></h3>
+<p>This allows you to add a fact, the fact must be valid; have all the correct properties with the correct types.</p>
+<h4 id="body-properties">Body Properties</h4>
+<table>
+<thead>
+<tr>
+<th id="property">Property</th>
+<th id="required">Required</th>
+<th id="type">Type</th>
+<th id="description">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The unique name (id) of the fact. This usually is in <code>snake_case</code>.</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The title of the fact, this is the display name of the fact.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The description of the fact.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>Yes</td>
+<td>Array (of Strings)</td>
+<td>The array of tags that are related to this fact. This may be empty.</td>
+</tr>
+<tr>
+<td><code>snippets</code></td>
+<td>Yes</td>
+<td>Array (of Strings)</td>
+<td>The array of snippets names related to this fact. This may be empty.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-3">Response</h4>
+<p>This will respond with status <code>201</code> if the fact was successfully added. <br />
+If the request was invalid <code>400</code> will be returned.</p>
+<p>The response will be in <code>json</code> either containing an object with a message.</p>
+<p>The response will also contain the <code>location</code> of the newly added fact in its header.</p>
+<h4 id="example-responses-2">Example Responses</h4>
+<p>Called ``</p>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 201</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;New fact was created&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 400</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Fact must have a name property&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<h2 id="snippets">Snippets</h2>
+<h3 id="get-apisnippet"><code>GET /api/snippet</code></h3>
+<p>This gets a fact snippet for a given name, passed as a query parameter.</p>
+<h4 id="query-parameters-3">Query Parameters</h4>
+<table>
+<thead>
+<tr>
+<th id="parameter">Parameter</th>
+<th id="required">Required</th>
+<th id="type">Type</th>
+<th id="description">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The unique name of the snippet you want to get.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-4">Response</h4>
+<p>This will respond with status <code>200</code> if the request was valid and a snippet was returned. If the name was not given or doesn't exist <code>400</code> will be returned.</p>
+<p>The response body will be in <code>json</code> either containing a snippet is successful or an object with a message property, explaining why the call failed.<br />
+See examples of what snippet objects are like below.</p>
+<p>Called <code>/api/snippet?name=jungle_mob_spawning</code>:</p>
+<pre><code class="hljs json language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;jungle_mob_spawning&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;fact&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;scary_ocelots&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;mappings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Mojang&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;net.minecraft.data.worldgen.biome.OverworldBiomes&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.20.4&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;snippet&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;public static Biome jungle(HolderGetter&lt;PlacedFeature&gt; features, HolderGetter&lt;ConfiguredWorldCarver&lt;?&gt;&gt; carvers) {&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;    MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;    BiomeDefaultFeatures.baseJungleSpawns(builder);&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;    builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 40, 1, 2))&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;        .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 2, 1, 3))&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;        .addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PANDA, 1, 1, 2));&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;    return baseJungle(features, carvers, 0.9F, false, false, true, builder, Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JUNGLE));&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;}&quot;</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;As you can see in the snippet, this is responsible for determining mob spawning in the jungle, this adds parrots, ocelots, and pandas. However ocelots are put under the &#x27;monster&#x27; category, &lt;code&gt;addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 2, 1, 3))&lt;/code&gt;, making them come under the monster spawn limits.&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<p>Called <code>/api/snippet</code>:</p>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 400</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Request must include name parameter&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<p>Called <code>/api/snippet?name=123456789</code> (invalid name):</p>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 400</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Snippet doesn&#x27;t exist&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<h3 id="post-apiadd_snippet"><code>POST /api/add_snippet</code></h3>
+<p>This allows you to add a snippet, the snippet must be valid; have all the correct properties with the correct types.</p>
+<h4 id="body-properties-1">Body Properties</h4>
+<table>
+<thead>
+<tr>
+<th id="property">Property</th>
+<th id="required">Required</th>
+<th id="type">Type</th>
+<th id="description">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The unique name (id) of the snippet. This usually is in <code>snake_case</code>.</td>
+</tr>
+<tr>
+<td><code>fact</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The unique name (id) of the fact that the snippet is for.</td>
+</tr>
+<tr>
+<td><code>mappings</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The name of the deobfuscation source mappings that the snippet uses.</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The source file of the snippet.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The version of Minecraft that this snippet originates from.</td>
+</tr>
+<tr>
+<td><code>snippet</code></td>
+<td>Yes</td>
+<td>Array (of Strings)</td>
+<td>The snippet source code, each new line must be a separate element.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Yes</td>
+<td>String</td>
+<td>The description of the snippet.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response-5">Response</h4>
+<p>This will respond with status <code>201</code> if the snippet was successfully added.<br />
+If the request was invalid <code>400</code> will be returned.</p>
+<p>The response will be in <code>json</code> either containing an object with a message.</p>
+<p>The response will also contain the <code>location</code> of the newly added snippet in its header.</p>
+<h4 id="example-responses-3">Example Responses</h4>
+<p>Called ``</p>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 201</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;New snippet was created&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+<pre><code class="hljs json5 language-json5"><span class="hljs-comment">// Code 400</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Snippet must have mappings property&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>
+            </main>
+          </body>
+        </html>

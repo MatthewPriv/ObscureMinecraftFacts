@@ -59,7 +59,7 @@ See examples of what fact objects are like below.
 
 #### Example Responses
 Called `/api/fact?name=explosive_furnace_minecarts`:
-```json5
+```json
 {
   "name": "explosive_furnace_minecarts",
   "title": "Explosive Furnace Minecarts",
@@ -75,7 +75,7 @@ Called `/api/fact?name=explosive_furnace_minecarts`:
 ```
 
 Called `/api/fact?name=explosive_furnace_minecarts?embed_snippets=true`:
-```json5
+```json
 {
   "name": "explosive_furnace_minecarts",
   "title": "Explosive Furnace Minecarts",
