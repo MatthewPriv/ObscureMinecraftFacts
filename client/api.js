@@ -1,6 +1,8 @@
+const url = "https://obscureminecraftfacts.onrender.com";
+
 export async function addFact(name, title, description, tags, snippets) {
     try {
-        const factResponse = await fetch("http://127.0.0.1:8080/api/add_fact", {
+        const factResponse = await fetch(`${url}/api/add_fact`, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -29,7 +31,7 @@ export async function addFact(name, title, description, tags, snippets) {
 }
 
 async function addSnippet(snippet) {
-    const response = await fetch("http://127.0.0.1:8080/api/add_snippet", {
+    const response = await fetch(`${url}/api/add_snippet`, {
         headers: {
             "Content-Type": "application/json"
         },
@@ -44,7 +46,7 @@ async function addSnippet(snippet) {
 
 export async function getTags() {
     try {
-        const response = await fetch("http://127.0.0.1:8080/api/tags");
+        const response = await fetch(`${url}/api/tags`);
         return JSON.parse(await response.text());
     } catch (e) {
         return null;
@@ -64,7 +66,7 @@ export async function getFacts(tags, search, randomize, limit) {
 
     let factNames;
     try {
-        const factNamesResponse = await fetch(`http://127.0.0.1:8080/api/facts?${tagsParam}${searchParam}`);
+        const factNamesResponse = await fetch(`${url}/api/facts?${tagsParam}${searchParam}`);
         factNames = JSON.parse(await factNamesResponse.text());
     } catch (e) {
         // Server is down
@@ -85,7 +87,7 @@ export async function getFacts(tags, search, randomize, limit) {
     const facts = [];
     for (const name of factNames) {
         try {
-            const factResponse = await fetch(`http://127.0.0.1:8080/api/fact?name=${name}&embed_snippets=true`);
+            const factResponse = await fetch(`${url}/api/fact?name=${name}&embed_snippets=true`);
             const fact = JSON.parse(await factResponse.text());
             facts.push(fact);
         } catch (e) {
